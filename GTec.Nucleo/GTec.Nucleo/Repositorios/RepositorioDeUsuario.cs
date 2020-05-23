@@ -11,13 +11,13 @@ namespace GTec.Nucleo.Repositorios
 {
     public class RepositorioDeUsuario
     {
-        public bool UsuarioEhValido(Usuario usuario)
+        public bool UsuarioEhValido(string nome, string senha)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    comando.CommandText = $"SELECT * FROM USUARIOS WHERE NOME = '{usuario.Nome}' AND SENHA = '{usuario.Senha}'";
+                    comando.CommandText = $"SELECT * FROM USUARIOS WHERE NOME = '{nome}' AND SENHA = '{senha}'";
 
                     using (DbDataReader dataReader = comando.ExecuteReader())
                     {

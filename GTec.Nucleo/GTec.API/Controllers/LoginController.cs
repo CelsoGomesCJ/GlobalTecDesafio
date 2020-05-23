@@ -18,11 +18,11 @@ namespace GTec.API.Controllers
         [Route("autentique")]
         public RetornoAutenticacao Autentique([FromBody] Usuario usuario)
         {
-            var mapeadorDeUsuario = new RepositorioDeUsuario();
+            var repositorioDeUsuario = new RepositorioDeUsuario();
             var hashSenha = Criptografia.ObtenhaHashSha256(usuario.Senha);
             usuario.Senha = hashSenha;
 
-            if (mapeadorDeUsuario.UsuarioEhValido(usuario))
+            if (repositorioDeUsuario.UsuarioEhValido(usuario.Nome, usuario.Senha))
             {
                 var token = $"{usuario.Nome}|{usuario.Senha}";
                 return RetornoAutenticacao.CrieSucessoAutenticacao(token);
@@ -39,13 +39,13 @@ namespace GTec.API.Controllers
         [Route("registrarusuario")]
         public RetornoRegistroUsuario RegistrarUsuario([FromBody] Usuario usuario)
         {
-            var mapeadorDeUsuario = new RepositorioDeUsuario();
+            var repositorioDeUsuario = new RepositorioDeUsuario();
             var hashSenha = Criptografia.ObtenhaHashSha256(usuario.Senha);
             usuario.Senha = hashSenha;
 
             try
             {
-                mapeadorDeUsuario.RegistreUsuario(usuario);
+                repositorioDeUsuario.RegistreUsuario(usuario);
                 var token = $"{usuario.Nome}|{usuario.Senha}";
                 return RetornoRegistroUsuario.CrieSucessoRegistro(token);
             }
