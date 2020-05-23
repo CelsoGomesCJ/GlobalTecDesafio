@@ -1,4 +1,7 @@
-﻿using GTec.Nucleo.Utilidades;
+﻿using GTec.Nucleo.Negocio;
+using GTec.Nucleo.Utilidades;
+using Npgsql;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +19,29 @@ namespace GTec.Nucleo.Repositorios
                     return true;
                 }
             }
+        }
+
+        public void RegistreUsuario(Usuario usuario)
+        {
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = @"INSERT INTO USUARIOS (NOME, SENHA) VALUES(@NOME, @SENHA)";
+
+                    comando.Parameters.Add(CrieParametro("@NOME", NpgsqlDbType.Varchar, 250));
+                    comando.Parameters.Add(CrieParametro("@SENHA", NpgsqlDbType.Varchar, 250));
+                    comando.Prepare();
+                    comando.Parameters["@NOME"].Value = usuario.Nome;
+                    comando.Parameters["@SENHA"].Value = usuario.Senha;
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private NpgsqlParameter CrieParametro(string campo, NpgsqlDbType tipo, int size)
+        {
+            return new NpgsqlParameter(campo, tipo, size);
         }
     }
 }

@@ -4,6 +4,7 @@ using GTec.Nucleo.Negocio;
 using GTec.API.Models;
 using GTec.Nucleo.Repositorios;
 using GTec.Nucleo.Utilidades;
+using System;
 
 namespace GTec.API.Controllers
 {
@@ -28,50 +29,42 @@ namespace GTec.API.Controllers
         public RetornoAutenticacao Autentique([FromBody] Usuario usuario)
         {
             
-            var mapeadorLogin = new RepositorioDeUsuario();
-            mapeadorLogin.UsuarioEhValido(usuario.Nome, usuario.Senha);
+            var mapeadorDeUsuario = new RepositorioDeUsuario();
+            mapeadorDeUsuario.UsuarioEhValido(usuario.Nome, usuario.Senha);
 
-            //var hashSenha = Criptografia.ObtenhaHashSha256(usuario.Senha);
-            //var hashSenha = Utilidades.ObtenhaHashSha256(discente.senha);
-            //discente.senha = hashSenha;
-
-            //if (mapeadorLogin.UsuarioEhValido(discente.email, discente.senha))
-            //{
-            //    var retorno = RetornoPadrao.CrieSucessoLogin();
-            //    retorno.Result = mapeadorDiscente.ObtenhaDiscente(discente.email, discente.senha);
-            //    return retorno;
-            //}
-
-            //return RetornoPadrao.CrieFalhaLogin();
+            
 
             return new RetornoAutenticacao();
 
         }
 
-        ////Realize Login
-        //[HttpPost]
-        //[Route("registrarusuario")]
-        //public RetornoPadrao RegistrarUsuario([FromBody] Discente discente)
-        //{
-        //    var mapeadorDiscente = new MapeamentoDiscente();
-        //    var retorno = new RetornoPadrao();
+        //Registrar Usuario
+        [HttpPost]
+        [Route("registrarusuario")]
+        public RetornoAutenticacao RegistrarUsuario([FromBody] Usuario usuario)
+        {
+            var mapeadorDeUsuario = new RepositorioDeUsuario();
+            var retornoAutenticacao = new RetornoAutenticacao();
+            var hashSenha = Criptografia.ObtenhaHashSha256(usuario.Senha);
+            usuario.Senha = hashSenha;
 
-        //    var hashSenha = Utilidades.ObtenhaHashSha256(discente.senha);
-        //    discente.senha = hashSenha;
+            try
+            {
+                mapeadorDeUsuario.RegistreUsuario(usuario);
+                retornoAutenticacao.Codigo = 0;
+                retornoAutenticacao.Mensagem = "Usuário registrado com sucesso!";
+                /*Estou criando o Token juntando a informação do usuário e senha mas só por exemplo mesmo 
+                 * não estou pensando na segurança em estar retornando a senha como token mesmo estando como Hash*/
+                retornoAutenticacao.Token = $"{usuario.Nome}|{usuario.Senha}";
+            }
+            catch (Exception erro)
+            {
+                retornoAutenticacao.Codigo = 1;
+                retornoAutenticacao.Mensagem = $"Falha ao criar usuário";
+                retornoAutenticacao.Token = string.Empty;
+            }
 
-        //    try
-        //    {
-        //        mapeadorDiscente.RegistreUsuario(discente);
-        //        retorno.Codigo = 0;
-        //        retorno.Mensagem = "Usuário registrado com sucesso!";
-        //    }
-        //    catch (Exception erro)
-        //    {
-        //        retorno.Codigo = 1;
-        //        retorno.Mensagem = $"Falha ao criar usuário";
-        //    }
-
-        //    return retorno;
-        //}
+            return retornoAutenticacao;
+        }
     }
 }
