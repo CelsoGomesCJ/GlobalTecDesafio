@@ -33,6 +33,26 @@ namespace GTec.Nucleo.Repositorios
             return pessoasDoRepositorio;
         }
 
+        public Pessoa ObtenhaPessoaPorCodigo(long codigoUsuario)
+        {
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = $"SELECT * FROM PESSOAS WHERE CODIGO = '{codigoUsuario}'";
+
+                    using (DbDataReader dataReader = comando.ExecuteReader())
+                    {
+                        if (dataReader.Read())
+                        {
+                            return MapeiePessoa(dataReader);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         private Pessoa MapeiePessoa(DbDataReader dr)
         {
             var pessoa = new Pessoa();
