@@ -13,58 +13,47 @@ namespace GTec.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-
-            //var teste = new Usuario();
-
-            
-        }
-
+        //Autenticar Usuário 
         [HttpPost]
         [Route("autentique")]
         public RetornoAutenticacao Autentique([FromBody] Usuario usuario)
         {
-            
             var mapeadorDeUsuario = new RepositorioDeUsuario();
-            mapeadorDeUsuario.UsuarioEhValido(usuario.Nome, usuario.Senha);
+            var hashSenha = Criptografia.ObtenhaHashSha256(usuario.Senha);
+            usuario.Senha = hashSenha;
 
-            
+            if (mapeadorDeUsuario.UsuarioEhValido(usuario))
+            {
+                var token = $"{usuario.Nome}|{usuario.Senha}";
+                return RetornoAutenticacao.CrieSucessoAutenticacao(token);
+                ///*Estou criando o Token juntando a informação do usuário e senha mas só por exemplo mesmo 
+                // * não estou pensando na segurança em estar retornando a senha como token mesmo estando como Hash*/
+            }
 
-            return new RetornoAutenticacao();
+            return RetornoAutenticacao.CrieFalhaAutenticacao();
 
         }
 
         //Registrar Usuario
         [HttpPost]
         [Route("registrarusuario")]
-        public RetornoAutenticacao RegistrarUsuario([FromBody] Usuario usuario)
+        public RetornoRegistroUsuario RegistrarUsuario([FromBody] Usuario usuario)
         {
             var mapeadorDeUsuario = new RepositorioDeUsuario();
-            var retornoAutenticacao = new RetornoAutenticacao();
             var hashSenha = Criptografia.ObtenhaHashSha256(usuario.Senha);
             usuario.Senha = hashSenha;
 
             try
             {
                 mapeadorDeUsuario.RegistreUsuario(usuario);
-                retornoAutenticacao.Codigo = 0;
-                retornoAutenticacao.Mensagem = "Usuário registrado com sucesso!";
-                /*Estou criando o Token juntando a informação do usuário e senha mas só por exemplo mesmo 
-                 * não estou pensando na segurança em estar retornando a senha como token mesmo estando como Hash*/
-                retornoAutenticacao.Token = $"{usuario.Nome}|{usuario.Senha}";
+                var token = $"{usuario.Nome}|{usuario.Senha}";
+                return RetornoRegistroUsuario.CrieSucessoRegistro(token);
             }
             catch (Exception erro)
             {
-                retornoAutenticacao.Codigo = 1;
-                retornoAutenticacao.Mensagem = $"Falha ao criar usuário";
-                retornoAutenticacao.Token = string.Empty;
+                return RetornoRegistroUsuario.CrieFalhaNoRegistro();
             }
 
-            return retornoAutenticacao;
         }
     }
 }

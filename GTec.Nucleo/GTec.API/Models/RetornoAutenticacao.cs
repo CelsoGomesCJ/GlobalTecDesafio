@@ -5,10 +5,25 @@ using System.Threading.Tasks;
 
 namespace GTec.API.Models
 {
-    public class RetornoAutenticacao
+    public class RetornoAutenticacao : RetornoAbstrato
     {
-        public int Codigo { get; set; }
-        public string Mensagem { get; set; }
-        public string Token { get; set; }
+        public static RetornoAutenticacao CrieFalhaAutenticacao()
+        {
+            return new RetornoAutenticacao
+            {
+                Codigo = 1,
+                Mensagem = "Nao autorizado"
+            };
+        }
+
+        public static RetornoAutenticacao CrieSucessoAutenticacao(string token)
+        {
+            return new RetornoAutenticacao
+            {
+                Codigo = 0,
+                Mensagem = "Autenticado com sucesso!",
+                Token = token
+            };
+        }
     }
 }
