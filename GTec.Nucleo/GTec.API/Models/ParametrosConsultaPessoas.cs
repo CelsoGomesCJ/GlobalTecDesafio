@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GTec.API.Models
 {
-    public class DTOParametrosConsultaPessoas
+    public class ParametrosConsultaPessoas
     {
         public string Token { get; set; }
         public long Codigo { get; set; }

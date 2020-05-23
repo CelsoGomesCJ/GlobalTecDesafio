@@ -1,6 +1,7 @@
 ﻿using GTec.API.Models;
 using GTec.Nucleo.Negocio;
 using GTec.Nucleo.Repositorios;
+using GTec.Nucleo.Utilidades;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace GTec.API.Controllers
 
         [HttpGet]
         [Route("obtenhapessoapelocodigo")]
-        public RetornoAbstrato ObtenhaPessoasPeloCodigo([FromBody] DTOParametrosConsultaPessoas parametros)
+        public RetornoAbstrato ObtenhaPessoasPeloCodigo([FromBody] ParametrosConsultaPessoas parametros)
         {
             var repositorioDePessoas = new RepositorioDePessoas();
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
@@ -40,7 +41,7 @@ namespace GTec.API.Controllers
 
         [HttpGet]
         [Route("obtenhatodaspessoasdorepositorio")]
-        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] DTOParametrosConsultaPessoas parametros)
+        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] ParametrosConsultaPessoas parametros)
         {
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
             var tokenValido = ValideToken(parametros.Token);
