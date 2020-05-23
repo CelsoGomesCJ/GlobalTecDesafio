@@ -4,19 +4,25 @@ using Npgsql;
 using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text;
 
 namespace GTec.Nucleo.Repositorios
 {
     public class RepositorioDeUsuario
     {
-        public bool UsuarioEhValido(string nome, string senha)
+        public bool UsuarioEhValido(Usuario usuario)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
             {
                 using (var comando = conexao.CreateCommand())
                 {
-                    return true;
+                    comando.CommandText = $"SELECT * FROM USUARIOS WHERE NOME = '{usuario.Nome}' AND SENHA = '{usuario.Senha}'";
+
+                    using (DbDataReader dataReader = comando.ExecuteReader())
+                    {
+                        return dataReader.Read();
+                    }
                 }
             }
         }
