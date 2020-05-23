@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GTec.Nucleo.Negocio
 {
-    class Pessoa
+    public class Pessoa
     {
         public long Codigo { get; set; }
         public string Nome { get; set; }
