@@ -9,14 +9,13 @@ namespace GTec.Nucleo.Repositorios
     {
         public bool UsuarioEhValido(string nome, string senha)
         {
-            //using (var conexao = Conexao.Instancia.CrieConexao())
-            //{
-            //    using (var comando = conexao.CreateCommand())
-            //    {
-            //        return true;
-            //    }
-            //}
-            return true;
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    return true;
+                }
+            }
         }
     }
 }
