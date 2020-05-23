@@ -9,6 +9,7 @@ namespace GTec.Nucleo.Negocio
     {
         public long Codigo { get; set; }
         public string Nome { get; set; }
+        public EnumeradorSeguroDeUF Cidade { get; set; }
         public CPF CPF { get; set; }
         public DateTime DataDeNascimento { get; set; }
     }

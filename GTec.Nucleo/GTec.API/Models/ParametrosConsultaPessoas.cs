@@ -9,5 +9,6 @@ namespace GTec.API.Models
     {
         public string Token { get; set; }
         public long Codigo { get; set; }
+        public int CodigoCidade { get; set; }
     }
 }

@@ -33,6 +33,30 @@ namespace GTec.Nucleo.Repositorios
             return pessoasDoRepositorio;
         }
 
+        public List<Pessoa> ObtenhaPessoasPorCodigoUF(int codUF)
+        {
+            var pessoasDoRepositorio = new List<Pessoa>();
+
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = $"SELECT * FROM PESSOAS WHERE CIDADE = '{codUF}'";
+
+                    using (var dr = comando.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var pessoa = MapeiePessoa(dr);
+                            pessoasDoRepositorio.Add(pessoa);
+                        }
+                    }
+                }
+            }
+
+            return pessoasDoRepositorio;
+        }
+
         public Pessoa ObtenhaPessoaPorCodigo(long codigoUsuario)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
@@ -60,6 +84,7 @@ namespace GTec.Nucleo.Repositorios
             pessoa.Nome = dr.GetString(1);
             pessoa.CPF = new CPF(dr.GetString(2));
             pessoa.DataDeNascimento = dr.GetDateTime(3);
+            pessoa.Cidade = EnumeradorSeguroDeUF.ObtenhaCidadePorId(dr.GetInt32(4));
 
             return pessoa;
         }

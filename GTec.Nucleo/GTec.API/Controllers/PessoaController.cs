@@ -15,6 +15,30 @@ namespace GTec.API.Controllers
     {
 
         [HttpGet]
+        [Route("obtenhapessoaspelocodigoUF")]
+        public RetornoAbstrato ObtenhaPessoasPeloCodigoUF([FromBody] ParametrosConsultaPessoas parametros)
+        {
+            var repositorioDePessoas = new RepositorioDePessoas();
+            var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
+            var tokenValido = ValideToken(parametros.Token);
+
+            if (usuarioAutenticado && tokenValido)
+            {
+                try
+                {
+                    var pessoa = repositorioDePessoas.ObtenhaPessoasPorCodigoUF(parametros.CodigoCidade);
+                    return RetornoPessoa.CrieRetornoListaDePessoas(pessoa);
+                }
+                catch (Exception erro)
+                {
+                    return RetornoPessoa.CrieFalhaRetornoDePessoas();
+                }
+            }
+
+            return RetornoAutenticacao.CrieFalhaAutenticacao();
+        }
+
+        [HttpGet]
         [Route("obtenhapessoapelocodigo")]
         public RetornoAbstrato ObtenhaPessoasPeloCodigo([FromBody] ParametrosConsultaPessoas parametros)
         {
