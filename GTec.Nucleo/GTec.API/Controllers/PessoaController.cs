@@ -1,10 +1,8 @@
 ﻿using GTec.API.Models;
 using GTec.Nucleo.Negocio;
 using GTec.Nucleo.Repositorios;
-using GTec.Nucleo.Utilidades;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 
 namespace GTec.API.Controllers
 {
@@ -13,10 +11,36 @@ namespace GTec.API.Controllers
     [ApiController]
     public class PessoaController : ControllerBase
     {
+        //Registrar Pessoa
+        [HttpPost]
+        [Route("registrarpessoa")]
+        public RetornoAbstrato registrePessoa([FromBody] ParametrosPessoas parametros)
+        {
+            var repositorioDePessoas = new RepositorioDePessoas();
+            var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
+            var tokenValido = ValideToken(parametros.Token);
+
+            if (usuarioAutenticado && tokenValido)
+            {
+                try
+                {
+                    var pessoa = new Pessoa(parametros.Nome, parametros.CPF, parametros.DataDeNascimento, parametros.CodigoCidade);
+                    repositorioDePessoas.registrePessoa(pessoa);
+                    return RetornoPessoa.CrieSucessoRetornoRegistroDePessoas(pessoa);
+                }
+                catch (Exception erro)
+                {
+                    return RetornoPessoa.CrieFalhaRetornoRegistroDePessoas(erro);
+                }
+            }
+
+            return RetornoAutenticacao.CrieFalhaAutenticacao();
+
+        }
 
         [HttpGet]
         [Route("obtenhapessoaspelocodigoUF")]
-        public RetornoAbstrato ObtenhaPessoasPeloCodigoUF([FromBody] ParametrosConsultaPessoas parametros)
+        public RetornoAbstrato ObtenhaPessoasPeloCodigoUF([FromBody] ParametrosPessoas parametros)
         {
             var repositorioDePessoas = new RepositorioDePessoas();
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
@@ -27,11 +51,11 @@ namespace GTec.API.Controllers
                 try
                 {
                     var pessoa = repositorioDePessoas.ObtenhaPessoasPorCodigoUF(parametros.CodigoCidade);
-                    return RetornoPessoa.CrieRetornoListaDePessoas(pessoa);
+                    return RetornoPessoa.CrieRetornoConsultaListaDePessoas(pessoa);
                 }
                 catch (Exception erro)
                 {
-                    return RetornoPessoa.CrieFalhaRetornoDePessoas();
+                    return RetornoPessoa.CrieFalhaRetornoConsultaDePessoas();
                 }
             }
 
@@ -40,7 +64,7 @@ namespace GTec.API.Controllers
 
         [HttpGet]
         [Route("obtenhapessoapelocodigo")]
-        public RetornoAbstrato ObtenhaPessoasPeloCodigo([FromBody] ParametrosConsultaPessoas parametros)
+        public RetornoAbstrato ObtenhaPessoasPeloCodigo([FromBody] ParametrosPessoas parametros)
         {
             var repositorioDePessoas = new RepositorioDePessoas();
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
@@ -51,11 +75,11 @@ namespace GTec.API.Controllers
                 try
                 {
                     var pessoa = repositorioDePessoas.ObtenhaPessoaPorCodigo(parametros.Codigo);
-                    return RetornoPessoa.CrieRetornoPessoa(pessoa);
+                    return RetornoPessoa.CrieRetornoConsultaPessoa(pessoa);
                 }
                 catch (Exception erro)
                 {
-                    return RetornoPessoa.CrieFalhaRetornoDePessoas();
+                    return RetornoPessoa.CrieFalhaRetornoConsultaDePessoas();
                 }
             }
 
@@ -65,7 +89,7 @@ namespace GTec.API.Controllers
 
         [HttpGet]
         [Route("obtenhatodaspessoasdorepositorio")]
-        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] ParametrosConsultaPessoas parametros)
+        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] ParametrosPessoas parametros)
         {
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
             var tokenValido = ValideToken(parametros.Token);
@@ -76,11 +100,11 @@ namespace GTec.API.Controllers
                 try
                 {
                     var pessoas = repositorioPessoas.ObtenhaTodasPessoasDoRepositorio();
-                    return RetornoPessoa.CrieRetornoListaDePessoas(pessoas);
+                    return RetornoPessoa.CrieRetornoConsultaListaDePessoas(pessoas);
                 }
                 catch (Exception erro)
                 {
-                    return RetornoPessoa.CrieFalhaRetornoDePessoas();
+                    return RetornoPessoa.CrieFalhaRetornoConsultaDePessoas();
                 }
             }
 

@@ -11,7 +11,7 @@ namespace GTec.API.Models
         public dynamic Resultado { get; set; }
 
 
-        public static RetornoPessoa CrieRetornoPessoa(Pessoa pessoa)
+        public static RetornoPessoa CrieRetornoConsultaPessoa(Pessoa pessoa)
         {
             return new RetornoPessoa
             {
@@ -22,7 +22,7 @@ namespace GTec.API.Models
         }
 
 
-        public static RetornoPessoa CrieRetornoListaDePessoas(List<Pessoa> pessoas)
+        public static RetornoPessoa CrieRetornoConsultaListaDePessoas(List<Pessoa> pessoas)
         {
             return new RetornoPessoa
             {
@@ -32,12 +32,31 @@ namespace GTec.API.Models
             };
         }
 
-        public static RetornoPessoa CrieFalhaRetornoDePessoas()
+        public static RetornoPessoa CrieFalhaRetornoConsultaDePessoas()
         {
             return new RetornoPessoa
             {
                 Codigo = 1,
                 Mensagem = "Aconteceu algum problema ao obter a consulta de pessoas!",
+            };
+        }
+
+        public static RetornoPessoa CrieFalhaRetornoRegistroDePessoas(Exception erro)
+        {
+            return new RetornoPessoa
+            {
+                Codigo = 1,
+                Mensagem = $"{erro.Message}",
+            };
+        }
+
+        public static RetornoPessoa CrieSucessoRetornoRegistroDePessoas(Pessoa pessoa)
+        {
+            return new RetornoPessoa
+            {
+                Codigo = 1,
+                Mensagem = "Registrado com sucesso!",
+                Resultado = pessoa
             };
         }
 

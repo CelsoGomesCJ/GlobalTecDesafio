@@ -1,5 +1,7 @@
 ﻿using GTec.Nucleo.Negocio;
 using GTec.Nucleo.Utilidades;
+using Npgsql;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -9,6 +11,30 @@ namespace GTec.Nucleo.Repositorios
 {
     public class RepositorioDePessoas
     {
+        public Pessoa registrePessoa(Pessoa pessoa)
+        {
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = @"INSERT INTO public.pessoas(NOME, CPF, DATADENASCIMENTO, CIDADE) VALUES (@NOME, @CPF, @DATADENASCIMENTO, @CIDADE);";
+
+                    comando.Parameters.Add(CrieParametro("@NOME", NpgsqlDbType.Varchar));
+                    comando.Parameters.Add(CrieParametro("@CPF", NpgsqlDbType.Varchar));
+                    comando.Parameters.Add(CrieParametro("@DATADENASCIMENTO", NpgsqlDbType.Date));
+                    comando.Parameters.Add(CrieParametro("@CIDADE", NpgsqlDbType.Integer));
+                    comando.Prepare();
+                    comando.Parameters["@NOME"].Value = pessoa.Nome;
+                    comando.Parameters["@CPF"].Value = pessoa.CPF.Numero;
+                    comando.Parameters["@DATADENASCIMENTO"].Value = pessoa.DataDeNascimento;
+                    comando.Parameters["@CIDADE"].Value = pessoa.Cidade.Id;
+                    comando.ExecuteNonQuery();
+                }
+            }
+
+            return pessoa;
+        }
+
         public List<Pessoa> ObtenhaTodasPessoasDoRepositorio()
         {
             var pessoasDoRepositorio = new List<Pessoa>();
@@ -87,6 +113,11 @@ namespace GTec.Nucleo.Repositorios
             pessoa.Cidade = EnumeradorSeguroDeUF.ObtenhaCidadePorId(dr.GetInt32(4));
 
             return pessoa;
+        }
+
+        private NpgsqlParameter CrieParametro(string campo, NpgsqlDbType tipo)
+        {
+            return new NpgsqlParameter(campo, tipo);
         }
     }
 }
