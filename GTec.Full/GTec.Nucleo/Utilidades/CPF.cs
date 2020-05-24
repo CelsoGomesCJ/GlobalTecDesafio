@@ -1,4 +1,6 @@
 ﻿
+using System.Linq;
+
 namespace GTec.Nucleo.Utilidades
 {
     public class CPF
@@ -8,9 +10,18 @@ namespace GTec.Nucleo.Utilidades
         public CPF(string cpf)
         {
             Numero = cpf;
+
+            if (!string.IsNullOrEmpty(cpf))
+                Numero = SomenteNumeros(cpf).PadLeft(11, '0');
         }
         public bool Valido => EhValido(Numero);
         public override string ToString() => string.IsNullOrEmpty(Numero) ? string.Empty : Numero.Length == 14 ? Numero : Numero.Insert(9, "-").Insert(6, ".").Insert(3, ".");
+        public string SomenteNumeros(string valor)
+        {
+            return new string((from c in valor ?? string.Empty where char.IsDigit(c) select c).ToArray());
+        }
+
+        //http://www.macoratti.net/11/09/c_val1.htm
         public static bool EhValido(string cpf)
         {
             var multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
@@ -44,5 +55,6 @@ namespace GTec.Nucleo.Utilidades
 
             return cpf.EndsWith(digito);
         }
+
     }
 }

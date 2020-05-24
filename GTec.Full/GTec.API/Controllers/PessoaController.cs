@@ -13,8 +13,8 @@ namespace GTec.API.Controllers
     {
 
         [HttpGet]
-        [Route("obtenhapessoaspelocodigoUF")]
-        public RetornoAbstrato ObtenhaPessoasPeloCodigoUF([FromBody] DTOParametrosPessoa parametros)
+        [Route("obtenhatodaspessoasdorepositorio")]
+        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] DTOParametrosPessoa parametros)
         {
             var requisicaoValida = ValideRequisicao(parametros);
 
@@ -24,8 +24,8 @@ namespace GTec.API.Controllers
 
                 try
                 {
-                    var pessoa = repositorioDePessoas.ObtenhaPessoasPorCodigoUF(parametros.CodigoCidade);
-                    return RetornoPessoa.CrieRetornoConsultaListaDePessoas(pessoa);
+                    var pessoas = repositorioDePessoas.ObtenhaTodasPessoasDoRepositorio();
+                    return RetornoPessoa.CrieRetornoConsultaListaDePessoas(pessoas);
                 }
                 catch (Exception erro)
                 {
@@ -61,8 +61,8 @@ namespace GTec.API.Controllers
         }
 
         [HttpGet]
-        [Route("obtenhatodaspessoasdorepositorio")]
-        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] DTOParametrosPessoa parametros)
+        [Route("obtenhapessoaspelocodigoUF")]
+        public RetornoAbstrato ObtenhaPessoasPeloCodigoUF([FromBody] DTOParametrosPessoa parametros)
         {
             var requisicaoValida = ValideRequisicao(parametros);
 
@@ -72,8 +72,8 @@ namespace GTec.API.Controllers
 
                 try
                 {
-                    var pessoas = repositorioDePessoas.ObtenhaTodasPessoasDoRepositorio();
-                    return RetornoPessoa.CrieRetornoConsultaListaDePessoas(pessoas);
+                    var pessoa = repositorioDePessoas.ObtenhaPessoasPorCodigoUF(parametros.CodigoCidade);
+                    return RetornoPessoa.CrieRetornoConsultaListaDePessoas(pessoa);
                 }
                 catch (Exception erro)
                 {
@@ -110,7 +110,6 @@ namespace GTec.API.Controllers
             return RetornoAutenticacao.CrieFalhaAutenticacao();
         }
 
-        //Excluir Pessoa
         [HttpDelete]
         [Route("excluir")]
         public RetornoAbstrato excluirPessoa([FromBody] DTOParametrosPessoa parametros)
@@ -135,7 +134,6 @@ namespace GTec.API.Controllers
             return RetornoAutenticacao.CrieFalhaAutenticacao();
         }
 
-        //Registrar Pessoa
         [HttpPost]
         [Route("registrar")]
         public RetornoAbstrato registrePessoa([FromBody] DTOParametrosPessoa parametros)
@@ -168,7 +166,6 @@ namespace GTec.API.Controllers
 
             return usuarioAutenticado && tokenValido;
         }
-
 
         public bool ValideToken(string token)
         {
