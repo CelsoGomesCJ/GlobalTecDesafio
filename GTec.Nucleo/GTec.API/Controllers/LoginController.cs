@@ -26,8 +26,6 @@ namespace GTec.API.Controllers
             {
                 var token = $"{usuario.Nome}|{usuario.Senha}";
                 return RetornoAutenticacao.CrieSucessoAutenticacao(token);
-                ///*Estou criando o Token juntando a informação do usuário e senha mas só por exemplo mesmo 
-                // * não estou pensando na segurança em estar retornando a senha como token mesmo estando como Hash*/
             }
 
             return RetornoAutenticacao.CrieFalhaAutenticacao();
