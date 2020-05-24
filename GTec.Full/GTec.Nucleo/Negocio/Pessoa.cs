@@ -28,6 +28,9 @@ namespace GTec.Nucleo.Negocio
 
             if (DateTime.Now < data)
                 throw new Exception("Data de nascimento inválida");
+
+            if (string.IsNullOrEmpty(nome))
+                throw new Exception();
             
             Nome = nome;
             Cidade = EnumeradorSeguroDeUF.ObtenhaCidadePorId(codigoCidade);

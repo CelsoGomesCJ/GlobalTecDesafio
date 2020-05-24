@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTec.Nucleo", "GTec.Nucleo\GTec.Nucleo.csproj", "{C57C288F-5582-47E0-8882-2D6D54AA84F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTec.Nucleo", "GTec.Nucleo\GTec.Nucleo.csproj", "{C57C288F-5582-47E0-8882-2D6D54AA84F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTec.API", "GTec.API\GTec.API.csproj", "{A4984A31-8F65-49BF-8417-3DE68CB4D048}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTec.API", "GTec.API\GTec.API.csproj", "{A4984A31-8F65-49BF-8417-3DE68CB4D048}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTec.Testes", "GTec.Testes\GTec.Testes.csproj", "{6E246676-A857-48DC-BE39-2DAF4FE8F84D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A4984A31-8F65-49BF-8417-3DE68CB4D048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4984A31-8F65-49BF-8417-3DE68CB4D048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4984A31-8F65-49BF-8417-3DE68CB4D048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E246676-A857-48DC-BE39-2DAF4FE8F84D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E246676-A857-48DC-BE39-2DAF4FE8F84D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E246676-A857-48DC-BE39-2DAF4FE8F84D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E246676-A857-48DC-BE39-2DAF4FE8F84D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
