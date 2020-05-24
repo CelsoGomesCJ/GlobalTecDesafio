@@ -1,7 +1,7 @@
 # GlobalTecDesafio
 Desafio para GlobalTec
 
-**# Resposta desafio parte 2, consulta SQL**
+**#Resposta desafio parte 2, consulta SQL**
 
 Coloquei apenas a consulta SQL os comandos DDL das tabelas se vocês quiserem também eu envio
 
