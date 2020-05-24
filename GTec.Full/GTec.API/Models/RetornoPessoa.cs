@@ -16,7 +16,7 @@ namespace GTec.API.Models
             return new RetornoPessoa
             {
                 Codigo = 0,
-                Mensagem = "Item obtidos!",
+                Mensagem = "Resultado consulta!",
                 Resultado = pessoa
             };
         }
@@ -27,7 +27,7 @@ namespace GTec.API.Models
             return new RetornoPessoa
             {
                 Codigo = 0,
-                Mensagem = "Itens obtidos!",
+                Mensagem = "Resultado consulta!",
                 Resultado = pessoas
             };
         }
