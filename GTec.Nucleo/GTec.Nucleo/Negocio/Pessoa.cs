@@ -13,7 +13,6 @@ namespace GTec.Nucleo.Negocio
         public CPF CPF { get; set; }
         public DateTime DataDeNascimento { get; set; }
 
-        
         public Pessoa()
         {
 

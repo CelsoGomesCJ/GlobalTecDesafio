@@ -11,24 +11,57 @@ namespace GTec.API.Controllers
     [ApiController]
     public class PessoaController : ControllerBase
     {
+        [HttpPut]
+        [Route("atualizar")]
+        public RetornoAbstrato atualizarPessoa([FromBody] DTOParametrosPessoa parametros)
+        {
+            var repositorioDePessoas = new RepositorioDePessoas();
+            var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
+            var tokenValido = ValideToken(parametros.Token);
+
+            if (usuarioAutenticado && tokenValido)
+            {
+                try
+                {
+                    var pessoa = new Pessoa(parametros.Nome, parametros.CPF, parametros.DataDeNascimento, parametros.CodigoCidade);
+                    pessoa.Codigo = parametros.Codigo;
+                    repositorioDePessoas.atualizarPessoa(pessoa);
+                    return RetornoPessoa.CrieSucessoRetornoRegistroDePessoas(pessoa);
+                }
+                catch (Exception erro)
+                {
+                    return RetornoPessoa.CrieFalhaRetornoRegistroDePessoas(erro);
+                }
+            }
+
+            return RetornoAutenticacao.CrieFalhaAutenticacao();
+        }
+
+
         //Eu estou passando por parametro no corpo da requisição o objeto inteiro pois não sei qual seria o método de exclusão se seria por Id da pessoa ou de outra forma
         //Excluir Pessoa
         [HttpDelete]
         [Route("excluir")]
-        public RetornoAbstrato excluaPessoa([FromBody] DTOParametrosPessoa parametros)
+        public RetornoAbstrato excluirPessoa([FromBody] DTOParametrosPessoa parametros)
         {
             var repositorioDePessoas = new RepositorioDePessoas();
+            var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
+            var tokenValido = ValideToken(parametros.Token);
 
-            try
+            if (usuarioAutenticado && tokenValido)
             {
-                repositorioDePessoas.ExcluirPessoaPeloId(parametros.Codigo);
-                return RetornoPessoa.CrieSucessoRetornoExclusaoDePessoa();
-            }
-            catch (Exception erro)
-            {
-                return RetornoPessoa.CrieFalhaRetornoExclusaoDePessoa();
+                try
+                {
+                    repositorioDePessoas.ExcluirPessoaPeloId(parametros.Codigo);
+                    return RetornoPessoa.CrieSucessoRetornoExclusaoDePessoa();
+                }
+                catch (Exception erro)
+                {
+                    return RetornoPessoa.CrieFalhaRetornoExclusaoDePessoa();
+                }
             }
 
+            return RetornoAutenticacao.CrieFalhaAutenticacao();
         }
 
 
@@ -134,6 +167,9 @@ namespace GTec.API.Controllers
 
         public bool ValideToken(string token)
         {
+            if (string.IsNullOrEmpty(token))
+                return false;
+
             var tokensPart = token.Split('|');
             var repositorioUsuario = new RepositorioDeUsuario();
                         

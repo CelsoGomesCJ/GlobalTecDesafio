@@ -11,6 +11,26 @@ namespace GTec.Nucleo.Repositorios
 {
     public class RepositorioDePessoas
     {
+
+        public Pessoa atualizarPessoa(Pessoa pessoa)
+        {
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = @"UPDATE public.pessoas SET nome = @NOME, cpf = @CPF, datadenascimento = @DATADENASCIMENTO, cidade = @CIDADE WHERE CODIGO = @CODIGO;";
+                    comando.Parameters.Add(CrieParametroComValor("@CODIGO", pessoa.Codigo));
+                    comando.Parameters.Add(CrieParametroComValor("@NOME", pessoa.Nome));
+                    comando.Parameters.Add(CrieParametroComValor("@CPF", pessoa.CPF.Numero));
+                    comando.Parameters.Add(CrieParametroComValor("@DATADENASCIMENTO", pessoa.DataDeNascimento));
+                    comando.Parameters.Add(CrieParametroComValor("@CIDADE", pessoa.Cidade.Id));
+                    comando.Prepare();
+                    comando.ExecuteNonQuery();
+                }
+            }
+            return pessoa;
+        }
+
         public void ExcluirPessoaPeloId(long codigoPessoa)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
