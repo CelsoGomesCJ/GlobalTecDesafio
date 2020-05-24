@@ -26,11 +26,9 @@ namespace GTec.Nucleo.Utilidades
         //        Password = "root",
         //        Database = "globaltec",
         //    };
-
         //    return sbConnectionString.ToString();
-
         //}
-
+            
         //String de conexão base de dados na nuvem Heroku
         private string CrieStringConexao()
         {
