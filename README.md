@@ -3,7 +3,7 @@ Desafio para GlobalTec
 
 **#Resposta desafio parte 2, consulta SQL**
 
-Coloquei apenas a consulta SQL os comandos DDL das tabelas se vocês quiserem também eu envio
+Instalei a versão Express do SQL Server e reproduzi o MER estou enviando apenas a consulta SQL do desafio os comandos DDL das tabelas se vocês quiserem também eu envio.
 
 > SELECT Nome, CP.Numero, CP.CodigoFornecedor, CP.DataVencimento, CP.DataPagamento, CP.Valor, 'Conta Paga' as Identificador
 FROM ContasPagas CP
