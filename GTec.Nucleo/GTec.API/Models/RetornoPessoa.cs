@@ -54,9 +54,27 @@ namespace GTec.API.Models
         {
             return new RetornoPessoa
             {
-                Codigo = 1,
+                Codigo = 0,
                 Mensagem = "Registrado com sucesso!",
                 Resultado = pessoa
+            };
+        }
+
+        public static RetornoPessoa CrieSucessoRetornoExclusaoDePessoa()
+        {
+            return new RetornoPessoa
+            {
+                Codigo = 0,
+                Mensagem = "Deletado com sucesso!",
+            };
+        }
+
+        public static RetornoPessoa CrieFalhaRetornoExclusaoDePessoa()
+        {
+            return new RetornoPessoa
+            {
+                Codigo = 1,
+                Mensagem = "Ocorreu algum problema na hora de excluir a pessoa!",
             };
         }
 

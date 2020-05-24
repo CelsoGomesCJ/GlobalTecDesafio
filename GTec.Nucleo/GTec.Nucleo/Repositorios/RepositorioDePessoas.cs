@@ -11,6 +11,19 @@ namespace GTec.Nucleo.Repositorios
 {
     public class RepositorioDePessoas
     {
+        public void ExcluirPessoaPeloId(long codigoPessoa)
+        {
+            using (var conexao = Conexao.Instancia.CrieConexao())
+            {
+                using (var comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = @"DELETE FROM PESSOAS WHERE CODIGO = @CODIGO"; ;
+                    comando.Parameters.Add(CrieParametroComValor("@CODIGO", codigoPessoa));
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
+
         public Pessoa registrePessoa(Pessoa pessoa)
         {
             using (var conexao = Conexao.Instancia.CrieConexao())
@@ -118,6 +131,11 @@ namespace GTec.Nucleo.Repositorios
         private NpgsqlParameter CrieParametro(string campo, NpgsqlDbType tipo)
         {
             return new NpgsqlParameter(campo, tipo);
+        }
+
+        private NpgsqlParameter CrieParametroComValor(string campo, object value)
+        {
+            return new NpgsqlParameter(campo, value);
         }
     }
 }

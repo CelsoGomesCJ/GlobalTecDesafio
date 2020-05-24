@@ -11,10 +11,31 @@ namespace GTec.API.Controllers
     [ApiController]
     public class PessoaController : ControllerBase
     {
+        //Eu estou passando por parametro no corpo da requisição o objeto inteiro pois não sei qual seria o método de exclusão se seria por Id da pessoa ou de outra forma
+        //Excluir Pessoa
+        [HttpDelete]
+        [Route("excluir")]
+        public RetornoAbstrato excluaPessoa([FromBody] DTOParametrosPessoa parametros)
+        {
+            var repositorioDePessoas = new RepositorioDePessoas();
+
+            try
+            {
+                repositorioDePessoas.ExcluirPessoaPeloId(parametros.Codigo);
+                return RetornoPessoa.CrieSucessoRetornoExclusaoDePessoa();
+            }
+            catch (Exception erro)
+            {
+                return RetornoPessoa.CrieFalhaRetornoExclusaoDePessoa();
+            }
+
+        }
+
+
         //Registrar Pessoa
         [HttpPost]
-        [Route("registrarpessoa")]
-        public RetornoAbstrato registrePessoa([FromBody] ParametrosPessoas parametros)
+        [Route("registrar")]
+        public RetornoAbstrato registrePessoa([FromBody] DTOParametrosPessoa parametros)
         {
             var repositorioDePessoas = new RepositorioDePessoas();
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
@@ -40,7 +61,7 @@ namespace GTec.API.Controllers
 
         [HttpGet]
         [Route("obtenhapessoaspelocodigoUF")]
-        public RetornoAbstrato ObtenhaPessoasPeloCodigoUF([FromBody] ParametrosPessoas parametros)
+        public RetornoAbstrato ObtenhaPessoasPeloCodigoUF([FromBody] DTOParametrosPessoa parametros)
         {
             var repositorioDePessoas = new RepositorioDePessoas();
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
@@ -64,7 +85,7 @@ namespace GTec.API.Controllers
 
         [HttpGet]
         [Route("obtenhapessoapelocodigo")]
-        public RetornoAbstrato ObtenhaPessoasPeloCodigo([FromBody] ParametrosPessoas parametros)
+        public RetornoAbstrato ObtenhaPessoasPeloCodigo([FromBody] DTOParametrosPessoa parametros)
         {
             var repositorioDePessoas = new RepositorioDePessoas();
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
@@ -89,7 +110,7 @@ namespace GTec.API.Controllers
 
         [HttpGet]
         [Route("obtenhatodaspessoasdorepositorio")]
-        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] ParametrosPessoas parametros)
+        public RetornoAbstrato ObtenhaTodasPublicacoesDoRepositorio([FromBody] DTOParametrosPessoa parametros)
         {
             var usuarioAutenticado = (parametros != null) || !string.IsNullOrEmpty(parametros.Token);
             var tokenValido = ValideToken(parametros.Token);
